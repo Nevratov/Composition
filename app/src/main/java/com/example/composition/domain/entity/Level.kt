@@ -1,5 +1,5 @@
-package com.example.composition.domain.entity;
+package com.example.composition.domain.entity
 
-enum Level {
+enum class Level {
     TEST, EASY, NORMAL, HARD
 }

@@ -2,7 +2,7 @@ package com.example.composition.domain.useCases
 
 import com.example.composition.domain.entity.GameSettings
 import com.example.composition.domain.repository.GameRepository
-import java.util.logging.Level
+import com.example.composition.domain.entity.Level
 
 class GetGameSettingsUseCase(
     private val repository: GameRepository
