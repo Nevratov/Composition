@@ -4,6 +4,7 @@ import com.example.composition.domain.entity.GameSettings
 import com.example.composition.domain.entity.Level
 import com.example.composition.domain.entity.Question
 import com.example.composition.domain.repository.GameRepository
+import kotlin.math.max
 import kotlin.random.Random
 
 object GameRepositoryImpl : GameRepository {
@@ -20,7 +21,8 @@ object GameRepositoryImpl : GameRepository {
         options.add(rightAnswer)
         while (options.size < countOfOptions) {
             val option = Random.nextInt(
-                rightAnswer - RANGE_BETWEEN_ANSWER, rightAnswer + RANGE_BETWEEN_ANSWER
+                VISIBLE_NUMBER_MIN_VALUE,
+                 maxSumValue
             )
             options.add(option)
         }

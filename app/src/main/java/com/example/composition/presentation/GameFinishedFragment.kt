@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
 import com.example.composition.R
 import com.example.composition.databinding.FragmentGameFinishedBinding
 import com.example.composition.domain.entity.GameResult
+import java.util.Locale
 
 class GameFinishedFragment : Fragment() {
 
@@ -38,6 +39,47 @@ class GameFinishedFragment : Fragment() {
         binding.buttonPlayAgain.setOnClickListener {
             retryGame()
         }
+        onBackPressedClickListenner()
+
+        with(binding) {
+            with(gameResult) {
+
+                tvRequiredCountCorrectAnswers.text = String.format(
+                    Locale.getDefault(),
+                    tvRequiredCountCorrectAnswers.text.toString(),
+                    gameSettings.minCountOfRightAnswers.toString()
+                )
+
+                tvScore.text = String.format(
+                    Locale.getDefault(),
+                    tvScore.text.toString(),
+                    countOfRightAnswers.toString()
+                )
+
+                tvRequiredPercentCorrectAnswers.text = String.format(
+                    Locale.getDefault(),
+                    tvRequiredPercentCorrectAnswers.text.toString(),
+                    gameSettings.minPercentOfRightAnswers.toString()
+                )
+
+                tvPercentCorrectAnswers.text = String.format(
+                    Locale.getDefault(),
+                    tvPercentCorrectAnswers.text.toString(),
+                    (countOfRightAnswers.toDouble() / countOfQuestions * 100).toString()
+                )
+
+                if (winner) {
+                    ivEmojiResult.setImageResource(R.drawable.ic_smile)
+                } else {
+                    ivEmojiResult.setImageResource(R.drawable.ic_sad)
+                }
+            }
+        }
+
+
+    }
+
+    private fun onBackPressedClickListenner() {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 retryGame()
@@ -49,7 +91,8 @@ class GameFinishedFragment : Fragment() {
     private fun retryGame() {
         requireActivity().supportFragmentManager.popBackStack(
             GameFragment.NAME,
-            POP_BACK_STACK_INCLUSIVE)
+            POP_BACK_STACK_INCLUSIVE
+        )
     }
 
 
@@ -60,18 +103,18 @@ class GameFinishedFragment : Fragment() {
 
     private fun parseArgs() {
         val args = requireArguments()
-        args.getParcelable<GameResult>(KEY_GAME_RESUL)?.let {
+        args.getParcelable<GameResult>(KEY_GAME_RESULT)?.let {
             gameResult = it
         }
     }
 
     companion object {
-        private const val KEY_GAME_RESUL = "game_result "
+        private const val KEY_GAME_RESULT = "game_result "
 
         fun newInstance(gameResult: GameResult): GameFinishedFragment {
             return GameFinishedFragment().apply {
-                arguments = Bundle(). apply {
-                    putParcelable(KEY_GAME_RESUL, gameResult)
+                arguments = Bundle().apply {
+                    putParcelable(KEY_GAME_RESULT, gameResult)
                 }
             }
         }

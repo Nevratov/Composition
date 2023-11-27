@@ -7,7 +7,7 @@
     tools:context=".presentation.GameFragment">
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/tv_timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -53,11 +53,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:text="@string/invisible_value"
         app:layout_constraintBottom_toBottomOf="@+id/tv_left_number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_left_number"
-        app:layout_constraintTop_toTopOf="@+id/tv_left_number"
-        tools:text="?" />
+        app:layout_constraintTop_toTopOf="@+id/tv_left_number" />
 
     <TextView
         android:id="@+id/tv_option1"
@@ -141,6 +141,9 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:max="100"
+
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/tv_option2"
         app:layout_constraintEnd_toEndOf="parent"
