@@ -12,8 +12,9 @@
     <string name="right_answers">Павильных ответов %s (минимум %s)</string>
     <string name="button_play_again">ПОПРОБОВАТЬ СНОВА</string>
     <string name="required_count_of_correct_answers">Необходимое количество правильных ответов: %s</string>
-    <string name="your_score">Ваш счёт</string>
+    <string name="your_score">Ваш счёт: %s</string>
     <string name="required_percent_correct_answers">Необходимый процент правильных ответов: %s</string>
     <string name="percent_correct_answers">Процент правильных ответов: %s</string>
     <string name="game_over">Game over</string>
+    <string name="invisible_number">\?</string>
 </resources>
