@@ -3,8 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_container_fragment"
-    android:name="com.example.composition.presentation.WelcomeFragment"
+
     tools:layout="@layout/fragment_welcome"
-    tools:context=".presentation.MainActivity">
+    tools:context=".presentation.MainActivity"
+
+    android:name="androidx.navigation.fragment.NavHostFragment"
+    app:defaultNavHost="true"
+    app:navGraph="@navigation/nav_graph"
+    >
+
+
 </androidx.fragment.app.FragmentContainerView>
