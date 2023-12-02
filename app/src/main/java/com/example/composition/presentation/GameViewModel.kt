@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.composition.R
 import com.example.composition.data.GameRepositoryImpl
+import com.example.composition.domain.entity.GameResult
 import com.example.composition.domain.entity.Level
 import com.example.composition.domain.entity.Question
 import com.example.composition.domain.useCases.GenerateQuestionUseCase
@@ -26,10 +27,29 @@ class GameViewModel(
         getGameSettingsUseCase(level)
     }
 
+
     private val _question = MutableLiveData<Question>()
     val question: LiveData<Question>
         get() = _question
 
+    private val _gameResult = MutableLiveData<GameResult>()
+    val gameOver: LiveData<GameResult>
+        get() = _gameResult
+
+    private val _progress = MutableLiveData<Int>()
+    val progress: LiveData<Int>
+        get() = _progress
+
+    val minPercentByRightAnswers: Int
+        get() = gameSettings.minPercentOfRightAnswers
+
+    private val _enoughPercent = MutableLiveData<Boolean>()
+    val enoughPercent: LiveData<Boolean>
+        get() = _enoughPercent
+
+    private val _enoughCount = MutableLiveData<Boolean>()
+    val enoughCount: LiveData<Boolean>
+        get() = _enoughCount
 
     private val _timerField = MutableLiveData<String>()
     val timerField: LiveData<String>
@@ -49,27 +69,37 @@ class GameViewModel(
     init {
         generateNewQuestion()
         startTimer()
+        _rightAnswersField.value = getRightAnswersField()
     }
 
     private fun generateNewQuestion() {
         _question.value = generateQuestionUseCase(gameSettings.maxSumValue)
     }
 
-
     fun checkAnswer(answer: Int) {
         if (answer == question.value?.rightAnswer) {
             countRightAnswers++
         }
         countQuestions++
-        _rightAnswersField.value =getRightAnswersField()
+        _rightAnswersField.value = getRightAnswersField()
+        _progress.value = getPercentRightAnswers()
+        generateNewQuestion()
+        _enoughPercent.value = checkEnoughPercent()
+        _enoughCount.value = checkEnoughCount()
     }
+
+    private fun checkEnoughPercent() =
+        getPercentRightAnswers() >= gameSettings.minPercentOfRightAnswers
+
+    private fun checkEnoughCount() =
+        countRightAnswers >= gameSettings.minCountOfRightAnswers
 
     private fun getRightAnswersField(): String {
         return String.format(
             application.getString(R.string.right_answers),
-            getPercentRightAnswers(),
-            gameSettings.minPercentOfRightAnswers
-            )
+            countRightAnswers,
+            gameSettings.minCountOfRightAnswers
+        )
     }
 
     private fun getPercentRightAnswers() =
@@ -84,14 +114,19 @@ class GameViewModel(
             }
 
             override fun onFinish() {
-                TODO("Not yet implemented")
+                _gameResult.value = GameResult(
+                    enoughCount.value == true && enoughPercent.value == true,
+                    countRightAnswers,
+                    countQuestions,
+                    gameSettings
+                )
             }
         }
         timer.start()
     }
 
     private fun getTime(millisUntilFinished: Long): String {
-        val sec = millisUntilFinished * 1000
+        val sec = millisUntilFinished / 1000
 
         val minutes = sec / 60
         val seconds = sec % 60

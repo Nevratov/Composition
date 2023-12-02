@@ -10,7 +10,7 @@ object GameRepositoryImpl : GameRepository {
 
     private const val SUM_MIN_VALUE = 3
     private const val VISIBLE_NUMBER_MIN_VALUE = 1
-    private const val RANGE_BETWEEN_ANSWER = 3
+
 
     override fun generateQuestion(maxSumValue: Int, countOfOptions: Int): Question {
         val sum = Random.nextInt(SUM_MIN_VALUE, maxSumValue + 1)
@@ -20,7 +20,7 @@ object GameRepositoryImpl : GameRepository {
         options.add(rightAnswer)
         while (options.size < countOfOptions) {
             val option = Random.nextInt(
-                rightAnswer - RANGE_BETWEEN_ANSWER, rightAnswer + RANGE_BETWEEN_ANSWER
+                VISIBLE_NUMBER_MIN_VALUE, maxSumValue
             )
             options.add(option)
         }
